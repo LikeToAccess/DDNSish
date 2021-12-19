@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-credentials.md
+config.md
 selenium_data
 
 # C extensions
