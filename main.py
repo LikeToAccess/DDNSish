@@ -12,6 +12,7 @@
 #==============================================================================
 import os
 import time
+import requests
 from selenium import webdriver
 from selenium.common.exceptions import *
 from selenium.webdriver.common.by import By
@@ -45,9 +46,26 @@ class Scraper:
 		return self.driver.current_url
 
 
-def main(freenom_url):
+def post(url, hostname):
+		resp = requests.post(url, data = {"hostname": hostname})
+		return resp.text
+
+def main(ddns_url, freenom_url):
+	public_ip_address = list(
+		filter(
+			lambda part: part,
+			[
+				part if part.replace(".", "").isnumeric() else None \
+				for part in post(
+					ddns_url, "AF2C8D6BAE3F298AF53F2B0A8A9DC67C5"
+				).split()
+			]
+		)
+	)[0]
+	print(public_ip_address)
 	scraper = Scraper(minimize=False)
-	scraper.open_link(url)
+	scraper.open_link(freenom_url)
+
 
 if __name__ == "__main__":
-	scraper = 
+	main("http://iplookup.asus.com/nslookup.php", "https://my.freenom.com/clientarea.php?managedns=ianmc.ga&domainid=1112694997")
