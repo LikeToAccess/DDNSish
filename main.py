@@ -47,8 +47,20 @@ class Scraper:
 
 
 def post(url, hostname):
-		resp = requests.post(url, data = {"hostname": hostname})
-		return resp.text
+	resp = requests.post(url, data = {"hostname": hostname})
+	return resp.text
+
+def put(url, data):
+	resp = requests.put(url,
+		data={
+		"Content-Type": "application/json\" --data '{\"type\":\"A\",\"name\":\"ricotv.gq\",\"content\":\"65.128.148.156\",\"ttl\":auto,\"proxied\":false}'"
+		},
+		headers={
+			"X-Auth-Email": "igeussbill@gmail.com",
+			"X-Auth-Key":   "c8228d9b9de9210e9bb055685dc2cb58b5343",
+		}
+	)
+	return resp.text
 
 def main(ddns_url, freenom_url):
 	public_ip_address = list(
@@ -63,9 +75,18 @@ def main(ddns_url, freenom_url):
 		)
 	)[0]
 	print(public_ip_address)
-	scraper = Scraper(minimize=False)
-	scraper.open_link(freenom_url)
+	print(put("https://api.cloudflare.com/client/v4/zones/316f7e977ad111e065f28d59d2e4789d/dns_records/316f7e977ad111e065f28d59d2e4789d", False))
+	# scraper = Scraper(minimize=False)
+	# scraper.open_link(freenom_url)
 
 
 if __name__ == "__main__":
 	main("http://iplookup.asus.com/nslookup.php", "https://my.freenom.com/clientarea.php?managedns=ianmc.ga&domainid=1112694997")
+
+
+
+# curl -X PUT "https://api.cloudflare.com/client/v4/zones/316f7e977ad111e065f28d59d2e4789d/dns_records/372e67954025e0ba6aaa6d586b9e0b59" -H "X-Auth-Email: igeussbill@gmail.com" -H "X-Auth-Key: c8228d9b9de9210e9bb055685dc2cb58b5343" -H "Content-Type: application/json" --data '{"type":"A","name":"ricotv.gq","content":"127.0.0.1","ttl":auto,"proxied":false}'
+
+
+
+# curl -X GET "https://api.cloudflare.com/client/v4/zones/316f7e977ad111e065f28d59d2e4789d/dns_records?type=A&name=ricotv.gq&content=75.168.204.74&proxied=false&page=1&per_page=100&order=type&direction=desc&match=all" -H "X-Auth-Email: igeussbill@gmail.com" -H "X-Auth-Key: c8228d9b9de9210e9bb055685dc2cb58b5343" -H "Content-Type: application/json"
